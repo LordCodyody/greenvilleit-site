@@ -27,7 +27,7 @@ jobs:
         # github.io/<repo>/ preview URL. Remove or set to '' when DNS is cut
         # to the custom domain (greenvilleitconsulting.com).
         env:
-          BASE_PATH: /greenvilleitconsulting.com
+          BASE_PATH: /greenvilleit-site
         run: node build.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
