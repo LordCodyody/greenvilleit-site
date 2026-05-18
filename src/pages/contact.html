@@ -1,0 +1,85 @@
+<!--
+title: Contact | Greenville IT Consulting
+description: Reach Cody at Greenville IT Consulting. Book a 30-minute discovery call, send a message, or run a free IT security scan.
+page_class: page-contact
+-->
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">Home</a> / Contact</nav>
+    <h1>Let's talk.</h1>
+    <p class="lede">
+      Thirty-minute discovery call, free, no pitch deck. You can also send a message below — we
+      reply within one business day.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-2" style="align-items: start;">
+      <div>
+        <h2 style="font-size: 1.6rem; margin-bottom: 18px;">Book a 30-minute discovery call</h2>
+        <p class="muted" style="margin-bottom: 22px;">
+          Pick a time on the calendar. We'll send a confirmation with the call link.
+        </p>
+        <div class="btn-row" style="margin-bottom: 22px;">
+          <a href="{{booking}}" class="btn btn-primary btn-lg" rel="noopener" target="_blank">Open the calendar ↗</a>
+        </div>
+
+        <h2 style="font-size: 1.6rem; margin: 36px 0 12px;">Other ways to reach us</h2>
+        <ul class="prose" style="max-width: none;">
+          <li><strong>Email:</strong> <a href="mailto:{{email}}">{{email}}</a></li>
+          <li><strong>Location:</strong> Greenville, South Carolina</li>
+          <li><strong>Service area:</strong> Carolinas, Georgia, Tennessee, broader Southeast (remote)</li>
+        </ul>
+
+        <h2 style="font-size: 1.6rem; margin: 36px 0 12px;">Already know what you need?</h2>
+        <div class="btn-row">
+          <a href="/scan/" class="btn btn-secondary">Run a Free Scan</a>
+          <a href="/services/" class="btn btn-secondary">Browse Services</a>
+        </div>
+      </div>
+
+      <div class="form-wrap">
+        <h2 style="font-size: 1.4rem; margin-bottom: 18px;">Send a message</h2>
+        <form data-endpoint="https://hooks.greenvilleitconsulting.com/contact" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="c-name">Name</label>
+              <input id="c-name" name="name" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="c-company">Company</label>
+              <input id="c-company" name="company" type="text" autocomplete="organization" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-email">Work email</label>
+            <input id="c-email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="c-topic">What can we help with?</label>
+            <select id="c-topic" name="topic">
+              <option value="">Pick one…</option>
+              <option>Security audit</option>
+              <option>Managed or co-managed IT</option>
+              <option>Microsoft 365 / Google Workspace</option>
+              <option>Automation / AI / n8n</option>
+              <option>GTM Stacks</option>
+              <option>Networking / Wi-Fi</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-msg">Message</label>
+            <textarea id="c-msg" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send message</button>
+          <p class="form-note">We reply within one business day. We never share your information.</p>
+          <div class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

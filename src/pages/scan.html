@@ -1,0 +1,115 @@
+<!--
+title: Free IT Security Scan | Greenville IT Consulting
+description: Free, vendor-neutral, read-only IT security scan. We check email authentication, exposed credentials, and external misconfigurations. Results in 24 hours.
+page_class: page-scan
+-->
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">Home</a> / Free Scan</nav>
+    <h1>Free IT Security Scan</h1>
+    <p class="lede">
+      A read-only, vendor-neutral check of the security surfaces attackers actually use against
+      small businesses. No software to install. Results in your inbox within one business day.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-2" style="align-items: start;">
+      <div>
+        <h2 style="font-size: 1.6rem; margin-bottom: 18px;">What we check</h2>
+        <div class="grid" style="gap: 14px;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem;">Email authentication</h3>
+            <p>Your DMARC, SPF, and DKIM records, with a plain-English read of where you're exposed to spoofing.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1.05rem;">Exposed credentials</h3>
+            <p>We check breach corpora for your domain's email addresses and known leaked passwords.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1.05rem;">External misconfigurations</h3>
+            <p>Public DNS, certificates, and services that are leaking information about your business.</p>
+          </div>
+        </div>
+
+        <h2 style="font-size: 1.6rem; margin: 36px 0 16px;">What you'll get</h2>
+        <ul class="prose" style="max-width: none;">
+          <li>A short, plain-English report</li>
+          <li>The top three fixes ranked by impact</li>
+          <li>A note on what's already fine — so you stop worrying about it</li>
+          <li>No follow-up sales calls unless you ask for one</li>
+        </ul>
+      </div>
+
+      <div class="form-wrap">
+        <h2 style="font-size: 1.4rem; margin-bottom: 8px;">Request your scan</h2>
+        <p class="muted" style="margin-bottom: 22px;">
+          We only need your business email and domain. Results delivered within 24 hours (one business day).
+        </p>
+        <form data-endpoint="https://hooks.greenvilleitconsulting.com/scan" novalidate>
+          <div class="field">
+            <label for="scan-name">Your name</label>
+            <input id="scan-name" name="name" type="text" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="scan-email">Work email</label>
+            <input id="scan-email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="scan-domain">Domain to scan</label>
+            <input id="scan-domain" name="domain" type="text" required placeholder="example.com" />
+          </div>
+          <div class="field">
+            <label for="scan-company">Business name</label>
+            <input id="scan-company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="field">
+            <label for="scan-notes">Anything specific to look at? <span class="muted">(optional)</span></label>
+            <textarea id="scan-notes" name="notes" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Run my free scan</button>
+          <p class="form-note">Read-only. No software is installed. We never share your results.</p>
+          <div class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">FAQ</span>
+      <h2>About the scan</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is this actually free? What's the catch?</summary>
+        <div class="faq-answer">
+          <p>Yes, it's free, and there's no catch. We get to demonstrate what working with us looks like, and you get a clear picture of where you stand. Most scans don't turn into a project, and that's fine.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does this touch any of our systems?</summary>
+        <div class="faq-answer">
+          <p>No. The scan is entirely read-only and uses publicly available information plus public breach data. We don't install software, don't log into anything, and don't ask for admin access.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Who sees my results?</summary>
+        <div class="faq-answer">
+          <p>Just you. We don't publish results, share them with vendors, or feed them into any marketing system. If you decide not to engage with us, we delete them on request.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How is this different from a vendor's free assessment?</summary>
+        <div class="faq-answer">
+          <p>A vendor's free assessment is a sales tool — they're looking for an excuse to put their product in front of you. Ours is vendor-neutral. If the fix is a setting change you can make yourself, we'll tell you exactly that.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>

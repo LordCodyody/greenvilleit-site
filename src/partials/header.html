@@ -1,0 +1,35 @@
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="/" class="brand" aria-label="Greenville IT Consulting home">
+      <svg class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <linearGradient id="brand-g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#5eead4" />
+            <stop offset="1" stop-color="#10b981" />
+          </linearGradient>
+        </defs>
+        <path d="M16 3 L27 8 V16 C27 22 22 27 16 29 C10 27 5 22 5 16 V8 Z"
+              fill="none" stroke="url(#brand-g)" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M11 16 l3 3 l7 -7" fill="none" stroke="url(#brand-g)" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Greenville IT</span>
+        <span class="brand-sub">Consulting</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/industries/">Industries</a>
+      <a href="{{gtm_stacks}}" class="nav-featured" rel="noopener">GTM Stacks <span class="ext" aria-hidden="true">↗</span></a>
+      <a href="/scan/">Free Scan</a>
+      <a href="/about/">About</a>
+      <a href="/contact/" class="btn btn-primary btn-sm">Talk to an Expert</a>
+    </nav>
+  </div>
+</header>
