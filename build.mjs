@@ -13,6 +13,9 @@ const BOOKING_URL = 'https://cal.com/codyjeziorski/30min';
 const EMAIL = 'info@greenvilleitconsulting.com';
 const GTM_STACKS_URL = 'https://lordcodyody.github.io/gtm-stacks/';
 const YEAR = new Date().getFullYear();
+// BASE_PATH is the URL prefix for assets and internal links.
+// Empty string for custom domain (greenvilleitconsulting.com), or '/<repo>' for the github.io subpath preview.
+const BASE_PATH = (process.env.BASE_PATH || '').replace(/\/$/, '');
 
 const layout = await readFile(join(SRC, 'partials', 'layout.html'), 'utf8');
 const header = await readFile(join(SRC, 'partials', 'header.html'), 'utf8');
@@ -85,6 +88,7 @@ async function build() {
     }
 
     const canonical = SITE_URL + (url === '/' ? '/' : url);
+    const partialVars = { booking: BOOKING_URL, current: url, gtm_stacks: GTM_STACKS_URL, base: BASE_PATH, year: YEAR, email: EMAIL };
     const vars = {
       title: meta.title || 'Greenville IT Consulting',
       description: meta.description || '',
@@ -94,15 +98,23 @@ async function build() {
       year: YEAR,
       email: EMAIL,
       booking: BOOKING_URL,
+      base: BASE_PATH,
       og_image: SITE_URL + '/assets/og-image.png',
       site_url: SITE_URL,
-      header: render(header, { booking: BOOKING_URL, current: url, gtm_stacks: GTM_STACKS_URL }),
-      footer: render(footer, { year: YEAR, email: EMAIL, booking: BOOKING_URL, gtm_stacks: GTM_STACKS_URL }),
-      content: render(body, { booking: BOOKING_URL, email: EMAIL, year: YEAR, gtm_stacks: GTM_STACKS_URL }),
+      header: render(header, partialVars),
+      footer: render(footer, partialVars),
+      content: render(body, partialVars),
       extra_head: meta.extra_head ? meta.extra_head : '',
     };
 
-    const html = render(layout, vars);
+    let html = render(layout, vars);
+    if (BASE_PATH) {
+      // Rewrite root-relative href/src in built output to include BASE_PATH.
+      // Skip protocol-relative (//) and anchor-only (#…) URLs.
+      html = html.replace(/(href|src)="\/(?!\/)([^"#][^"]*|)"/g, (_m, attr, rest) =>
+        `${attr}="${BASE_PATH}/${rest}"`
+      );
+    }
     await mkdir(dirname(outPath), { recursive: true });
     await writeFile(outPath, html);
     console.log('built', relative(ROOT, outPath));
@@ -134,10 +146,11 @@ ${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc></url>`).join('\n')}
 
   for (const [from, to] of redirects) {
     const stubPath = join(DIST, from.replace(/^\//, ''), 'index.html');
+    const dest = BASE_PATH + to;
     await mkdir(dirname(stubPath), { recursive: true });
     await writeFile(
       stubPath,
-      `<!doctype html><meta charset="utf-8"><title>Redirecting…</title><meta http-equiv="refresh" content="0; url=${to}"><link rel="canonical" href="${SITE_URL}${to}"><script>location.replace(${JSON.stringify(to)})</script><p>Redirecting to <a href="${to}">${to}</a>.</p>`
+      `<!doctype html><meta charset="utf-8"><title>Redirecting…</title><meta http-equiv="refresh" content="0; url=${dest}"><link rel="canonical" href="${SITE_URL}${to}"><script>location.replace(${JSON.stringify(dest)})</script><p>Redirecting to <a href="${dest}">${dest}</a>.</p>`
     );
   }
 

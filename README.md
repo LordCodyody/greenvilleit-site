@@ -36,4 +36,17 @@ serve.mjs     # local preview server
 
 - The `_redirects` file is for Cloudflare Pages if/when the host is switched. GitHub Pages doesn't honor it — the same redirects are also generated as static `meta http-equiv="refresh"` stub pages so the old Wix URLs work on both hosts.
 - Cloudflare Web Analytics snippet placeholder is in `src/partials/layout.html`. Replace the token before publishing if you want analytics enabled.
-- `CNAME` file in `public/` configures the GitHub Pages custom domain.
+
+## Cutover to the custom domain (greenvilleitconsulting.com)
+
+The build is currently configured for the github.io preview URL at
+`https://lordcodyody.github.io/greenvilleitconsulting.com/`. When ready to point
+the custom domain at this site:
+
+1. Move `CNAME.production` into `public/CNAME` (so it gets deployed):
+   `mv CNAME.production public/CNAME`
+2. Remove the `BASE_PATH` env block from `.github/workflows/deploy.yml`.
+3. Update DNS for `greenvilleitconsulting.com` to point at GitHub Pages
+   (A records `185.199.108.153 / .109.153 / .110.153 / .111.153`, plus the
+   four AAAA records, or a CNAME for `www` → `lordcodyody.github.io`).
+4. Commit and push. Pages will pick up the CNAME and provision HTTPS.

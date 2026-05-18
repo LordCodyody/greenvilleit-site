@@ -23,6 +23,11 @@ jobs:
         with:
           node-version: '20'
       - name: Build
+        # BASE_PATH makes assets and internal links resolve correctly on the
+        # github.io/<repo>/ preview URL. Remove or set to '' when DNS is cut
+        # to the custom domain (greenvilleitconsulting.com).
+        env:
+          BASE_PATH: /greenvilleitconsulting.com
         run: node build.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
