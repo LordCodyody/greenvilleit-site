@@ -88,11 +88,19 @@ async function build() {
     }
 
     const canonical = SITE_URL + (url === '/' ? '/' : url);
+    // Block search engines from indexing the github.io preview deploy.
+    // When BASE_PATH is empty (production), allow indexing.
+    const robots = BASE_PATH
+      ? '<meta name="robots" content="noindex,nofollow" />'
+      : '';
+    const schema = buildSchema({ url, title: meta.title, description: meta.description, canonical });
     const partialVars = { booking: BOOKING_URL, current: url, gtm_stacks: GTM_STACKS_URL, base: BASE_PATH, year: YEAR, email: EMAIL };
     const vars = {
       title: meta.title || 'Greenville IT Consulting',
       description: meta.description || '',
       canonical,
+      robots,
+      schema,
       url,
       page_class: meta.page_class || slugClass(url),
       year: YEAR,
@@ -125,9 +133,10 @@ async function build() {
     .map(p => relative(pagesDir, p).replace(/\\/g, '/'))
     .filter(r => r !== '404.html')
     .map(r => (r === 'index.html' ? '/' : '/' + r.replace(/\.html$/, '') + '/'));
+  const today = new Date().toISOString().slice(0, 10);
   const sm = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc></url>`).join('\n')}
+${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
 </urlset>
 `;
   await writeFile(join(DIST, 'sitemap.xml'), sm);
@@ -157,11 +166,127 @@ ${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc></url>`).join('\n')}
   const cf = redirects.map(([f, t]) => `${f} ${t} 301`).join('\n') + '\n';
   await writeFile(join(DIST, '_redirects'), cf);
 
+  // Override robots.txt for the preview deploy so it isn't indexed.
+  if (BASE_PATH) {
+    await writeFile(
+      join(DIST, 'robots.txt'),
+      'User-agent: *\nDisallow: /\n'
+    );
+  }
+
   console.log('\nDone. Output: dist/');
 }
 
 function slugClass(url) {
   return 'page' + url.replace(/\//g, '-').replace(/-+$/, '') || 'page-home';
+}
+
+function buildSchema({ url, title, description, canonical }) {
+  const orgRef = { '@id': `${SITE_URL}/#business` };
+
+  if (url === '/') {
+    const org = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'ProfessionalService',
+          '@id': `${SITE_URL}/#business`,
+          name: 'Greenville IT Consulting LLC',
+          url: SITE_URL,
+          image: `${SITE_URL}/assets/og-image.png`,
+          description: 'Security-first IT consulting for small and midsized businesses across Upstate South Carolina and the broader Southeast.',
+          email: EMAIL,
+          priceRange: '$$',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Greenville',
+            addressRegion: 'SC',
+            addressCountry: 'US',
+          },
+          areaServed: [
+            { '@type': 'State', name: 'South Carolina' },
+            { '@type': 'State', name: 'North Carolina' },
+            { '@type': 'State', name: 'Georgia' },
+            { '@type': 'State', name: 'Tennessee' },
+          ],
+          founder: { '@id': `${SITE_URL}/#cody` },
+          knowsAbout: [
+            'IT Security',
+            'CISSP',
+            'Microsoft 365',
+            'Google Workspace',
+            'DMARC',
+            'Conditional Access',
+            'Microsoft Purview',
+            'Intune',
+            'Workflow Automation',
+            'n8n',
+            'Compliance Engineering',
+          ],
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Greenville IT Consulting services',
+            itemListElement: [
+              { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'IT Security & Compliance' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Managed & Co-Managed IT' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automation & AI for SMBs' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Networking & Infrastructure' } },
+            ],
+          },
+        },
+        {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#cody`,
+          name: 'Cody Jeziorski',
+          jobTitle: 'CISSP-credentialed IT Consultant',
+          worksFor: { '@id': `${SITE_URL}/#business` },
+          sameAs: ['https://www.linkedin.com/in/codyjeziorski/'],
+          hasCredential: {
+            '@type': 'EducationalOccupationalCredential',
+            credentialCategory: 'certification',
+            name: 'Certified Information Systems Security Professional (CISSP)',
+          },
+        },
+      ],
+    };
+    return `<script type="application/ld+json">${JSON.stringify(org)}</script>`;
+  }
+
+  // Page-specific schemas
+  if (url === '/scan/') {
+    return `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Offer',
+      name: 'Free IT Security Scan',
+      description: 'A read-only, vendor-neutral check of email authentication (DMARC/SPF/DKIM), exposed credentials, and external misconfigurations. Results delivered within one business day.',
+      url: canonical,
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      offeredBy: orgRef,
+    })}</script>`;
+  }
+  if (url === '/services/') {
+    return `<script type="application/ld+json">${JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      url: canonical,
+      name: title,
+      description,
+      isPartOf: { '@type': 'WebSite', name: 'Greenville IT Consulting', url: SITE_URL },
+      about: orgRef,
+    })}</script>`;
+  }
+  // Default for interior pages: lightweight WebPage referencing the org
+  return `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { '@type': 'WebSite', name: 'Greenville IT Consulting', url: SITE_URL },
+    about: orgRef,
+  })}</script>`;
 }
 
 build().catch(e => {

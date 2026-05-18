@@ -6,15 +6,22 @@
   <title>{{title}}</title>
   <meta name="description" content="{{description}}" />
   <link rel="canonical" href="{{canonical}}" />
+  {{robots}}
   <meta name="theme-color" content="#0a1218" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{{title}}" />
   <meta property="og:description" content="{{description}}" />
   <meta property="og:image" content="{{og_image}}" />
+  <meta property="og:image:alt" content="Greenville IT Consulting — CISSP-led IT and security for Southeast SMBs" />
   <meta property="og:url" content="{{canonical}}" />
   <meta property="og:site_name" content="Greenville IT Consulting" />
+  <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{title}}" />
+  <meta name="twitter:description" content="{{description}}" />
+  <meta name="twitter:image" content="{{og_image}}" />
+  <meta name="twitter:image:alt" content="Greenville IT Consulting — CISSP-led IT and security for Southeast SMBs" />
 
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
@@ -24,31 +31,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/style.css" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "Greenville IT Consulting LLC",
-    "url": "{{site_url}}",
-    "image": "{{og_image}}",
-    "description": "Security-first IT consulting for small and midsized businesses across Upstate South Carolina and the broader Southeast.",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Greenville",
-      "addressRegion": "SC",
-      "addressCountry": "US"
-    },
-    "email": "{{email}}",
-    "areaServed": ["South Carolina", "North Carolina", "Georgia", "United States"],
-    "founder": {
-      "@type": "Person",
-      "name": "Cody Jeziorski",
-      "jobTitle": "CISSP-credentialed IT Consultant",
-      "sameAs": ["https://www.linkedin.com/in/codyjeziorski/"]
-    },
-    "serviceType": ["IT Security", "Managed IT", "Co-Managed IT", "Microsoft 365", "Google Workspace", "Automation", "AI Integration", "Endpoint Management", "DMARC", "Identity Management"]
-  }
-  </script>
+  {{schema}}
 
   {{extra_head}}
 
